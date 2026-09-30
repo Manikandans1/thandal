@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\FeedController;
 use App\Http\Controllers\Api\PaymentController;
 use App\Http\Controllers\Api\RazorpayWebhookController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\DB;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,6 +28,23 @@ Route::post('/auth/register-admin', [AuthController::class, 'registerAdmin'])->m
 
 // Razorpay calls this directly — no Sanctum auth, protected by webhook signature instead.
 Route::post('/webhooks/razorpay', [RazorpayWebhookController::class, 'handle']);
+
+Route::get('/debug/db', function () {
+    try {
+        DB::connection()->getPdo();
+
+        return response()->json([
+            'status' => 'success',
+            'database' => DB::connection()->getDatabaseName(),
+            'message' => 'Database connection successful',
+        ]);
+    } catch (\Throwable $e) {
+        return response()->json([
+            'status' => 'error',
+            'message' => $e->getMessage(),
+        ], 500);
+    }
+});
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/auth/logout', [AuthController::class, 'logout']);
