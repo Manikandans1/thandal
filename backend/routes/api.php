@@ -29,6 +29,13 @@ Route::post('/auth/register-admin', [AuthController::class, 'registerAdmin'])->m
 // Razorpay calls this directly — no Sanctum auth, protected by webhook signature instead.
 Route::post('/webhooks/razorpay', [RazorpayWebhookController::class, 'handle']);
 
+Route::get('/test', function () {
+    return response()->json([
+        'status' => 'ok',
+        'message' => 'THANDAL API OK',
+    ]);
+});
+
 Route::get('/debug/db', function () {
     try {
         DB::connection()->getPdo();

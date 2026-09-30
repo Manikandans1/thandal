@@ -2,6 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 
+Route::get('/test', function () {
+    return 'THANDAL WEB OK';
+});
+
 /*
 |--------------------------------------------------------------------------
 | Super Admin web panel (Livewire, session-based auth, same login rules as the API)
