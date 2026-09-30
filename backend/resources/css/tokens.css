@@ -1,0 +1,26 @@
+/* FINAL PALETTE (locked): white app background + Fresh Emerald. */
+:root{--brand:#0A7F57;--brand-deep:#064E3B;--hero-acc:#D9F99D;--brand-dark:#34D399}
+:root{
+  --page:#EEF1F4; --panel:#FFFFFF; --app:#FFFFFF; --card:#FFFFFF; --ink:#101828; --muted:#667085; --line:#E4E7EC;
+  --primary:var(--brand); --pi:#FFFFFF; --hero-bg:var(--brand-deep); --hero-btn:#FFFFFF; --hero-ink:var(--brand-deep); --frame:#101828;
+  --tint:color-mix(in srgb,var(--brand) 7%,#FFFFFF); --sh:0 1px 3px rgba(16,24,40,.07),0 1px 2px rgba(16,24,40,.04);
+  --ok:#0F7B45; --ok-bg:#E3F6EC; --ok-solid:#22A559; --warn:#A85400; --warn-bg:#FEF0D0; --bad:#C81E1E; --bad-bg:#FEE4E4; --bad-solid:#E03131;
+  --mute:#475467; --mute-bg:#F2F4F7; --cell:#E6EAEF; --on-solid:#FFFFFF;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --page:#05070A; --panel:#111418; --app:#0B0E12; --card:#14181D; --ink:#F2F4F7; --muted:#98A2B3; --line:#262B33;
+    --primary:var(--brand-dark); --pi:#06130B; --hero-bg:var(--brand-dark); --hero-btn:#06130B; --hero-ink:#FFFFFF; --hero-acc:#064E3B; --frame:#20252C;
+    --tint:color-mix(in srgb,var(--brand-dark) 12%,#14181D); --sh:none;
+    --ok:#6EE7A8; --ok-bg:#10301F; --ok-solid:#22C55E; --warn:#FBBF5E; --warn-bg:#33240A; --bad:#FCA5A5; --bad-bg:#3A1616; --bad-solid:#F87171;
+    --mute:#98A2B3; --mute-bg:#1C2128; --cell:#242A32; --on-solid:#06130B;
+  }
+}
+:root[data-theme="dark"]{
+  --page:#05070A; --panel:#111418; --app:#0B0E12; --card:#14181D; --ink:#F2F4F7; --muted:#98A2B3; --line:#262B33;
+  --primary:var(--brand-dark); --pi:#06130B; --hero-bg:var(--brand-dark); --hero-btn:#06130B; --hero-ink:#FFFFFF; --hero-acc:#064E3B; --frame:#20252C;
+  --tint:color-mix(in srgb,var(--brand-dark) 12%,#14181D); --sh:none;
+  --ok:#6EE7A8; --ok-bg:#10301F; --ok-solid:#22C55E; --warn:#FBBF5E; --warn-bg:#33240A; --bad:#FCA5A5; --bad-bg:#3A1616; --bad-solid:#F87171;
+  --mute:#98A2B3; --mute-bg:#1C2128; --cell:#242A32; --on-solid:#06130B;
+}

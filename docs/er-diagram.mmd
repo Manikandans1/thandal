@@ -1,0 +1,221 @@
+erDiagram
+  users {
+    bigint id PK
+    enum role
+    string name
+    string mobile UK
+    string pin_hash
+    enum status
+    bool must_change_pin
+    int failed_attempts
+    datetime locked_until
+    datetime last_login_at
+    bigint decided_by FK
+    datetime decided_at
+    string decision_note
+    bigint created_by FK
+  }
+  agents {
+    bigint id PK
+    bigint user_id FK
+    string agent_code UK
+    text address
+    date joined_on
+  }
+  customers {
+    bigint id PK
+    bigint user_id FK
+    string customer_code UK
+    text address
+    bigint agent_id FK
+    date joined_on
+    bigint created_by FK
+  }
+  identity_documents {
+    bigint id PK
+    bigint customer_id FK
+    bigint agent_id FK
+    enum doc_type
+    text number_encrypted
+    string number_last4
+    string file_path
+    string file_mime
+    int file_size_bytes
+    bool is_current
+    bigint uploaded_by FK
+  }
+  agent_assignments {
+    bigint id PK
+    bigint customer_id FK
+    bigint agent_id FK
+    bigint assigned_by FK
+    date assigned_on
+    date ended_on
+    string reason
+    paise active_customer_id UK
+  }
+  chits {
+    bigint id PK
+    string chit_code UK
+    bigint customer_id FK
+    bigint created_by FK
+    paise loan_amount_paise
+    enum frequency
+    int installment_count
+    paise installment_amount_paise
+    paise total_repayment_paise
+    paise paid_paise
+    int paid_installments
+    date start_date
+    date end_date
+    enum status
+    datetime activated_at
+    datetime completed_at
+    datetime cancelled_at
+    string cancel_reason
+    text notes
+  }
+  chit_installments {
+    bigint id PK
+    bigint chit_id FK
+    int sequence
+    date due_date
+    paise amount_paise
+    paise paid_paise
+    enum status
+    datetime paid_at
+  }
+  disbursements {
+    bigint id PK
+    bigint chit_id FK
+    enum method
+    paise amount_paise
+    enum status
+    date disbursed_on
+    string reference
+    string note
+    bigint recorded_by FK
+  }
+  payments {
+    bigint id PK
+    string receipt_number UK
+    bigint chit_id FK
+    bigint customer_id FK
+    enum method
+    enum status
+    paise amount_paise
+    paise net_amount_paise
+    datetime paid_at
+    bigint collected_by_agent_id FK
+    bigint recorded_by FK
+    string razorpay_order_id UK
+    string razorpay_payment_id UK
+    string failure_reason
+    string client_request_id UK
+    string notes
+  }
+  correction_requests {
+    bigint id PK
+    string code UK
+    bigint payment_id FK
+    bigint requested_by_agent_id FK
+    enum reason
+    paise requested_amount_paise
+    text note
+    enum status
+    bigint resolution_chit_id FK
+    bigint decided_by FK
+    datetime decided_at
+    text decision_note
+  }
+  payment_adjustments {
+    bigint id PK
+    bigint payment_id FK
+    bigint correction_request_id FK
+    enum type
+    paise delta_paise
+    bigint created_by FK
+    string reason
+  }
+  payment_allocations {
+    bigint id PK
+    bigint payment_id FK
+    bigint installment_id FK
+    paise amount_paise
+    bigint adjustment_id FK
+  }
+  razorpay_events {
+    bigint id PK
+    string event_id UK
+    string event_type
+    bigint payment_id FK
+    json payload
+    enum status
+    datetime processed_at
+    string error
+  }
+  audit_logs {
+    bigint id PK
+    bigint actor_user_id FK
+    string actor_label
+    string action
+    string entity_type
+    string entity_id
+    string summary
+    json before_json
+    json after_json
+    string ip_address
+    string user_agent
+  }
+  sequences {
+    string name
+    paise value
+  }
+  settings {
+    bigint id PK
+    string setting_key UK
+    json value
+    bigint updated_by FK
+  }
+  device_tokens {
+    bigint id PK
+    bigint user_id FK
+    string token UK
+    enum platform
+    datetime last_seen_at
+  }
+  users ||--o{ users : "decided_by"
+  users ||--o{ users : "created_by"
+  users ||--o| agents : "user_id"
+  users ||--o| customers : "user_id"
+  agents ||--o{ customers : "agent_id"
+  users ||--o{ customers : "created_by"
+  customers ||--o{ identity_documents : "customer_id"
+  agents ||--o{ identity_documents : "agent_id"
+  users ||--o{ identity_documents : "uploaded_by"
+  customers ||--o{ agent_assignments : "customer_id"
+  agents ||--o{ agent_assignments : "agent_id"
+  users ||--o{ agent_assignments : "assigned_by"
+  customers ||--o{ chits : "customer_id"
+  users ||--o{ chits : "created_by"
+  chits ||--o{ chit_installments : "chit_id"
+  chits ||--o{ disbursements : "chit_id"
+  users ||--o{ disbursements : "recorded_by"
+  chits ||--o{ payments : "chit_id"
+  customers ||--o{ payments : "customer_id"
+  agents ||--o{ payments : "collected_by_agent_id"
+  users ||--o{ payments : "recorded_by"
+  payments ||--o{ correction_requests : "payment_id"
+  agents ||--o{ correction_requests : "requested_by_agent_id"
+  chits ||--o{ correction_requests : "resolution_chit_id"
+  users ||--o{ correction_requests : "decided_by"
+  payments ||--o{ payment_adjustments : "payment_id"
+  correction_requests ||--o{ payment_adjustments : "correction_request_id"
+  users ||--o{ payment_adjustments : "created_by"
+  payments ||--o{ payment_allocations : "payment_id"
+  chit_installments ||--o{ payment_allocations : "installment_id"
+  payment_adjustments ||--o{ payment_allocations : "adjustment_id"
+  payments ||--o{ razorpay_events : "payment_id"
+  users ||--o{ audit_logs : "actor_user_id"
+  users ||--o{ settings : "updated_by"
+  users ||--o{ device_tokens : "user_id"
