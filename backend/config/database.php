@@ -15,6 +15,12 @@ return [
             'prefix' => '',
             'strict' => true,
             'engine' => 'InnoDB',
+
+            'options' => env('DB_SSL_CA')
+                ? [
+                    PDO::MYSQL_ATTR_SSL_CA => env('DB_SSL_CA'),
+                ]
+                : [],
         ],
     ],
     'migrations' => 'migrations',
