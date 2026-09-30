@@ -17,7 +17,8 @@ return Application::configure(basePath: dirname(__DIR__))
             'role' => EnsureRole::class,
             'role.web' => \App\Http\Middleware\EnsureWebRole::class,
         ]);
-        $middleware->api(prepend: [\Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class]);
+       // $middleware->api(prepend: [\Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class]);
+       $middleware->api();
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
